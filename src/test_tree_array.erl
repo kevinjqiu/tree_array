@@ -17,5 +17,5 @@
 %% -export([]).
 
 empty_tree_array_test() ->
-    ?assertEqual(#node, tree_array:new()).
+    ?assertMatch(#node{}, tree_array:new()).
 
