@@ -12,7 +12,7 @@
 %% Exported Functions
 %%
 -export([new/0, put/3, get/2, hirem/1]).
-
+-export([test/1]).
 %%
 %% API Functions
 %%
@@ -20,45 +20,32 @@
 new() ->
     {nil, nil, nil}.
 
-put({nil, nil, nil}, 0, Value) ->
-    {Value, nil, nil};
-
-put({nil, nil, nil}, 1, Value) ->
-    {Value, nil, nil};
+put(Node, Index, Value) when Index < 2 ->
+    case Node of
+        nil ->
+            put({nil, nil, nil}, Index, Value);
+        {nil, nil, nil} ->
+            {Value, nil, nil};
+        {MyValue, Left, Right} ->
+            case Index of
+                0 ->
+                    {MyValue, setelement(?VALUE, Left, Value), Right};
+                1 ->
+                    {MyValue, Left, setelement(?VALUE, Right, Value)}
+            end
+    end;
 
 put(nil, Index, Value) ->
     put({nil, nil, nil}, Index, Value);
-
-put(Node, 0, Value) ->
-    {MyValue, Left, Right} = Node,
-    {MyValue, setelement(?VALUE, Left, Value), Right};
-
-put(Node, 1, Value) ->
-    {MyValue, Left, Right} = Node,
-    {MyValue, Left, setelement(?VALUE, Right, Value)};
 
 put(Node, Index, Value) ->
     {MyValue, Left, Right} = Node,
 
     case Index rem 2 of
         0 ->
-            case Left of
-                nil ->
-                    {MyValue, put(nil, Index div 2, Value), Right};
-                _ ->
-                    {MyValue,
-                     setelement(?LEFT, Left, put(Left, Index div 2, Value)),
-                      Right}
-            end;
+            {MyValue, put(Left, Index div 2, Value), Right};
         1 ->
-            case Right of
-                nil ->
-                    {MyValue, Left, put(nil, Index div 2, Value)};
-                _ ->
-                    {MyValue,
-                     Left,
-                     setelement(?RIGHT, Right, put(Right, Index div 2, Value))}
-            end
+            {MyValue, Left, put(Right, Index div 2, Value)}
     end.
 
 
@@ -67,6 +54,9 @@ get(TreeArray, Index) ->
 
 hirem(TreeArray) ->
     ok.
+
+test(N) ->
+    put(new(), N, a).
 
 %%
 %% Local Functions
