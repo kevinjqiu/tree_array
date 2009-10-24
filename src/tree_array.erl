@@ -1,6 +1,6 @@
 %% Author: kevin.jingqiu
 %% Created: Oct 23, 2009
-%% Description: TODO: Add description to tree_array
+%% Description: A growable tree based on binary tree
 -module(tree_array).
 
 %%
@@ -49,12 +49,22 @@ put(Node, Index, Value) ->
     end.
 
 
-get(TreeArray, Index) ->
-    ok.
+get(nil, _) -> nil;
+
+get(Node, Index) when Index < 2 ->
+    {Value, _, _} = Node,
+    Value;
+
+get(Node, Index) ->
+    {_, Left, Right} = Node,
+    case Index rem 2 of
+        0 ->
+            get(Left, Index div 2);
+        1 ->
+            get(Right, Index div 2)
+    end.
+
 
 hirem(TreeArray) ->
     ok.
 
-%%
-%% Local Functions
-%%

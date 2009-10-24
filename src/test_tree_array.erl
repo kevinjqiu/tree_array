@@ -42,6 +42,21 @@ complete_tree_test() ->
     ?assertEqual(?COMPLETE_10, complete_tree(1, 11, tree_array:new())).
 
 
+get_test_() ->
+    {setup,
+     fun() -> complete_tree(1, 11, tree_array:new()) end,
+     fun(_) -> ok end,
+     fun generate_get_tests/1 }.
+
+
+generate_get_tests(TreeArray) ->
+    [?_assertEqual(1, tree_array:get(TreeArray, 1)),
+     ?_assertEqual(2, tree_array:get(TreeArray, 2)),
+     ?_assertEqual(3, tree_array:get(TreeArray, 3)),
+     ?_assertEqual(7, tree_array:get(TreeArray, 7)),
+     ?_assertEqual(nil, tree_array:get(TreeArray, 20))].
+
+
 complete_tree(N, Total, TreeArray) ->
     if
         N < Total ->
