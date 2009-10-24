@@ -1,1 +1,3 @@
--record(node, {value=null, left=null, right=null}).
+-define(VALUE, 1).
+-define(LEFT, 2).
+-define(RIGHT, 3).

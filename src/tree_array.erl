@@ -12,40 +12,53 @@
 %% Exported Functions
 %%
 -export([new/0, put/3, get/2, hirem/1]).
--define(VALUE, 1).
--define(LEFT, 2).
--define(RIGHT, 3).
 
 %%
 %% API Functions
 %%
 
 new() ->
-    {null, null, null}.
+    {nil, nil, nil}.
 
-put(_, 1, Value) ->
-    {Value, null, null};
+put({nil, nil, nil}, 0, Value) ->
+    {Value, nil, nil};
 
-put(TreeArray, Index, Value) ->
-    F = fun(Direction) ->
-                Element = element(Direction, TreeArray),
-                NewIndex = Index div 2,
-                case Element of
-                    null ->
-                        case NewIndex rem 2 of
-                            0 ->
-                                setelement(?LEFT, TreeArray, {Value, null, null});
-                            1 ->
-                                setelement(?RIGHT, TreeArray, {Value, null, null})
-                        end;
-                    _ ->
-                        setelement(Direction, TreeArray, put(element(Direction, TreeArray), NewIndex, Value))
-                end
-        end,
+put({nil, nil, nil}, 1, Value) ->
+    {Value, nil, nil};
+
+put(nil, Index, Value) ->
+    put({nil, nil, nil}, Index, Value);
+
+put(Node, 0, Value) ->
+    {MyValue, Left, Right} = Node,
+    {MyValue, setelement(?VALUE, Left, Value), Right};
+
+put(Node, 1, Value) ->
+    {MyValue, Left, Right} = Node,
+    {MyValue, Left, setelement(?VALUE, Right, Value)};
+
+put(Node, Index, Value) ->
+    {MyValue, Left, Right} = Node,
 
     case Index rem 2 of
-        1 -> F(?LEFT);
-        0 -> F(?RIGHT)
+        0 ->
+            case Left of
+                nil ->
+                    {MyValue, put(nil, Index div 2, Value), Right};
+                _ ->
+                    {MyValue,
+                     setelement(?LEFT, Left, put(Left, Index div 2, Value)),
+                      Right}
+            end;
+        1 ->
+            case Right of
+                nil ->
+                    {MyValue, Left, put(nil, Index div 2, Value)};
+                _ ->
+                    {MyValue,
+                     Left,
+                     setelement(?RIGHT, Right, put(Right, Index div 2, Value))}
+            end
     end.
 
 
@@ -58,4 +71,3 @@ hirem(TreeArray) ->
 %%
 %% Local Functions
 %%
-
