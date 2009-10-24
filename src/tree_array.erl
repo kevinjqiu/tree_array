@@ -12,7 +12,7 @@
 %% Exported Functions
 %%
 -export([new/0, put/3, get/2, hirem/1]).
--export([test/1]).
+
 %%
 %% API Functions
 %%
@@ -54,9 +54,6 @@ get(TreeArray, Index) ->
 
 hirem(TreeArray) ->
     ok.
-
-test(N) ->
-    put(new(), N, a).
 
 %%
 %% Local Functions

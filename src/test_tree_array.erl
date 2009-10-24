@@ -15,10 +15,10 @@
 -define(SEVEN, {nil,nil,{nil,nil,{a,nil,nil}}}).
 -define(COMPLETE_10, {1,
                       {2,
-                       {4,{8,nil,nil},{9,nil,nil}},
-                       {5,{10,nil,nil},nil}},
+                       {4,{8,nil,nil},nil},
+                       {6,{10,nil,nil},nil}},
                       {3,
-                       {6,nil,nil},
+                       {5,{9,nil,nil},nil},
                        {7,nil,nil}}}).
 
 empty_test() ->
